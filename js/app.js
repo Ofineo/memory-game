@@ -14,26 +14,29 @@
 
 //$(function () {
     let cardsSymbols = ['fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x', 'fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x'];
+    let card1, card2;
+    let cards = [];
+    let i = 0;        
+    let turn = 0;
 
     shuffle(cardsSymbols);
 
     function attach(array) {
 
         let card = $('li.card').each(function(i){
-            $(this).remove('open show');
-            $(this).remove('match');
+            $(this).toggleClass('open show', false);
+            $(this).toggleClass('match', false);
         });
 
         let cards = $('ul.deck').find('i');
         cards.each(function (i) {
-            $(this).remove('open show');
-            $(this).remove('match');
-
             //remove the class with the symbol in it to start from scratch
-            $(this).empty();
+            $(this).removeClass();
             //add the new and shuffled symbol to the cards
             $(this).addClass(array[i]);
         });
+        turnCounter();
+        
     }
 
     function shuffle(array) {
@@ -50,9 +53,7 @@
     }
 //})
 
-let cards = [];
-let i = 0;
-let card1, card2;
+
 
 $('.card').click('li', function (e) {
 
@@ -60,18 +61,22 @@ $('.card').click('li', function (e) {
     let symbol = card.children();
 
     let symbolInCard = symbol["0"].className;
+    turn++;
+    turnCounter();
     openCards(card);
+    
     //console.log(symbol["0"].className);
 });
 
 $('.restart').click('i', function(){
-    console.log('event');
+    turn = 0;
+    i = 0;
+    card1, card2 = undefined;
     shuffle(cardsSymbols);
     
 });
 
 function openCards(card) {
-
     card.addClass('open show');
     addToList(card);
 }
@@ -81,8 +86,7 @@ function closeCards(a, b) {
     b.toggleClass('open show');
 }
 
-function addToList(card) {
-    
+function addToList(card) {    
     if (i === 0) {
         card1 = card;
         i++;
@@ -96,14 +100,20 @@ function addToList(card) {
 function compareCards(a, b) {
     if (a.children()["0"].className === b.children()["0"].className) {        
         a.addClass('match');
-        b.addClass('match');
+        b.addClass('match');        
         closeCards(a, b);
     } else {
         setTimeout(() => {
             closeCards(a, b);            
         }, 500);        
     }
-    card1, card2 = undefined;    
+    card1, card2 = undefined;
+        
+}
+
+function turnCounter(){
+    turnText = 'Moves: ' + turn
+    $('span.moves').text(turnText);
 }
 
 /*
