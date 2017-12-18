@@ -12,16 +12,23 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 
-$(function () {
+//$(function () {
     let cardsSymbols = ['fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x', 'fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x'];
 
-    cardsSymbols = shuffle(cardsSymbols);
-
-    attach(cardsSymbols);
+    shuffle(cardsSymbols);
 
     function attach(array) {
+
+        let card = $('li.card').each(function(i){
+            $(this).remove('open show');
+            $(this).remove('match');
+        });
+
         let cards = $('ul.deck').find('i');
         cards.each(function (i) {
+            $(this).remove('open show');
+            $(this).remove('match');
+
             //remove the class with the symbol in it to start from scratch
             $(this).empty();
             //add the new and shuffled symbol to the cards
@@ -39,13 +46,13 @@ $(function () {
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
-
-        return array;
+        attach(array);
     }
-})
+//})
 
 let cards = [];
 let i = 0;
+let card1, card2;
 
 $('.card').click('li', function (e) {
 
@@ -53,44 +60,50 @@ $('.card').click('li', function (e) {
     let symbol = card.children();
 
     let symbolInCard = symbol["0"].className;
-
-    openCards(card, symbolInCard);
-
+    openCards(card);
     //console.log(symbol["0"].className);
-
 });
 
-function openCards(card, symbol) {
+$('.restart').click('i', function(){
+    console.log('event');
+    shuffle(cardsSymbols);
+    
+});
+
+function openCards(card) {
 
     card.addClass('open show');
-    addToList(card, symbol);
+    addToList(card);
 }
 
-function addToList(card, symbol) {
+function closeCards(a, b) {
+    a.toggleClass('open show');
+    b.toggleClass('open show');
+}
 
-    if (cards[0] != undefined) {
-        cards.forEach(e => {
-            if (e === symbol) {
-                closeCards(card);
-                card.addClass('match');
-            } else {
-                closeCards(card);
-            }
-            console.log(e);
-        });
-    } else {
-
-    }
-
-    if (i < 16) {
-        cards[i] = symbol;
+function addToList(card) {
+    
+    if (i === 0) {
+        card1 = card;
         i++;
+    } else {
+        card2 = card;
+        i = 0;
+        compareCards(card1, card2);
     }
-    console.log(cards);
 }
 
-function closeCards(card) {
-    card.toggleClass('open show');
+function compareCards(a, b) {
+    if (a.children()["0"].className === b.children()["0"].className) {        
+        a.addClass('match');
+        b.addClass('match');
+        closeCards(a, b);
+    } else {
+        setTimeout(() => {
+            closeCards(a, b);            
+        }, 500);        
+    }
+    card1, card2 = undefined;    
 }
 
 /*
