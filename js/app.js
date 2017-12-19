@@ -13,47 +13,47 @@
 // Shuffle function from http://stackoverflow.com/a/2450976
 
 //$(function () {
-    let cardsSymbols = ['fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x', 'fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x'];
-    let card1, card2;
-    let cards = [];
-    let i = 0;        
-    let turn = 0;
+let cardsSymbols = ['fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bolt fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x', 'fa fa-diamond fa-2x', 'fa fa-paper-plane-o fa-2x', 'fa fa-anchor fa-2x', 'fa fa-cube fa-2x', 'fa fa-leaf fa-2x', 'fa fa-bicycle fa-2x', 'fa fa-bomb fa-2x'];
+let card1, card2;
+let i = 0;
+let turn = 0;
+let matchedPairs = 0;
+let bestScore = 0;
 
-    shuffle(cardsSymbols);
 
-    function attach(array) {
+shuffle(cardsSymbols);
 
-        let card = $('li.card').each(function(i){
-            $(this).toggleClass('open show', false);
-            $(this).toggleClass('match', false);
-        });
+function attach(array) {
 
-        let cards = $('ul.deck').find('i');
-        cards.each(function (i) {
-            //remove the class with the symbol in it to start from scratch
-            $(this).removeClass();
-            //add the new and shuffled symbol to the cards
-            $(this).addClass(array[i]);
-        });
-        turnCounter();
-        
+    let card = $('li.card').each(function (i) {
+        $(this).toggleClass('open show', false);
+        $(this).toggleClass('match', false);
+    });
+
+    let cards = $('ul.deck').find('i');
+    cards.each(function (i) {
+        //remove the class with the symbol in it to start from scratch
+        $(this).removeClass();
+        //add the new and shuffled symbol to the cards
+        $(this).addClass(array[i]);
+    });
+    turnCounter();
+
+}
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
-
-    function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        attach(array);
-    }
+    attach(array);
+}
 //})
-
-
 
 $('.card').click('li', function (e) {
 
@@ -64,16 +64,17 @@ $('.card').click('li', function (e) {
     turn++;
     turnCounter();
     openCards(card);
-    
+
     //console.log(symbol["0"].className);
 });
 
-$('.restart').click('i', function(){
-    turn = 0;
+$('.restart').click('i', function () {
     i = 0;
+    turn = 0;
     card1, card2 = undefined;
+    turnCounter()
     shuffle(cardsSymbols);
-    
+
 });
 
 function openCards(card) {
@@ -86,7 +87,7 @@ function closeCards(a, b) {
     b.toggleClass('open show');
 }
 
-function addToList(card) {    
+function addToList(card) {
     if (i === 0) {
         card1 = card;
         i++;
@@ -98,24 +99,40 @@ function addToList(card) {
 }
 
 function compareCards(a, b) {
-    if (a.children()["0"].className === b.children()["0"].className) {        
+    if (a.children()["0"].className === b.children()["0"].className) {
         a.addClass('match');
-        b.addClass('match');        
+        b.addClass('match');
         closeCards(a, b);
+        matchedPairs++;
+
     } else {
         setTimeout(() => {
-            closeCards(a, b);            
-        }, 500);        
+            closeCards(a, b);
+        }, 500);
     }
     card1, card2 = undefined;
-        
+    won(matchedPairs);
 }
 
-function turnCounter(){
+function turnCounter() {
     turnText = 'Moves: ' + turn
     $('span.moves').text(turnText);
 }
 
+function won(matchedPairs) {
+    if (matchedPairs === 8) {
+        //alert("you won!! Your score is: " + turn);
+        $('#winning').modal('show');  
+        record();
+    }    
+}
+
+function record(){
+    if (bestScore === 0 || turn < bestScore) {
+        bestScore = 'Best Score: ' + turn;
+        $('span.record').text(bestScore);
+    }
+}
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)

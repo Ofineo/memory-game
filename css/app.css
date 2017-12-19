@@ -39,12 +39,13 @@ h1 {
 
 .deck {
     width: 660px;
-    min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    min-height: 700px;
+    background: url(../img/mat.jpg)center;
+    /*background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);*/
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-    display: flex;
+    display: flex !important;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
@@ -52,14 +53,16 @@ h1 {
 }
 
 .deck .card {
-    height: 125px;
+    margin: 10px;
+    height: 175px;
     width: 125px;
-    background: #2e3d49;
+    /*background: #2e3d49;*/
+    background: url(../img/cardback.png)center;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
     cursor: pointer;
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
@@ -72,8 +75,8 @@ h1 {
     -webkit-transition: all ease .5s;
     -moz-transition: all ease .5s;
     transition: all ease .5s;
-    opacity: 0;
-    background: rgba(24,188,156,.9);
+    opacity: 0;    
+    /*background: rgba(24,188,156,.9);*/
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,9 +86,11 @@ h1 {
 
 
 .deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
-    cursor: default;
+    transform: rotateY(0deg);
+    transition: transform 2s;
+    background: url(../img/cardreveal.png)center;
+    /*background: #02b3e4;*/
+    cursor: default;     
 }
 
 .deck .card.show {
@@ -94,7 +99,8 @@ h1 {
 
 .deck .card.match {
     cursor: default;
-    background: #02ccba;
+    background: url(../img/cardfront.png)center;
+    /*background: #02ccba;*/
     font-size: 33px;
 }
 
@@ -104,13 +110,17 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 600px;
     margin-bottom: 10px;
+}
+
+.record{
+    float: left;
 }
 
 .score-panel .stars {
     margin: 0;
-    padding: 0;
+    padding: 15;
     display: inline-block;
     margin: 0 5px 0 0;
 }
@@ -124,3 +134,10 @@ h1 {
     float: right;
     cursor: pointer;
 }
+/*
+ * Styles for the Modal
+ */
+
+ .modal-body {
+    text-align: center;
+ }
