@@ -40,8 +40,7 @@ h1 {
 .deck {
     width: 660px;
     min-height: 700px;
-    background: url(../img/mat.jpg)center;
-    /*background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);*/
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -53,11 +52,9 @@ h1 {
 }
 
 .deck .card {
-    margin: 10px;
-    height: 175px;
+    height: 125px;
     width: 125px;
-    /*background: #2e3d49;*/
-    background: url(../img/cardback.png)center;
+    background: #2e3d49;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
@@ -76,7 +73,7 @@ h1 {
     -moz-transition: all ease .5s;
     transition: all ease .5s;
     opacity: 0;    
-    /*background: rgba(24,188,156,.9);*/
+    background: rgba(24,188,156,.9);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,8 +85,7 @@ h1 {
 .deck .card.open {
     transform: rotateY(0deg);
     transition: transform 2s;
-    background: url(../img/cardreveal.png)center;
-    /*background: #02b3e4;*/
+    background: #02b3e4;
     cursor: default;     
 }
 
@@ -99,8 +95,7 @@ h1 {
 
 .deck .card.match {
     cursor: default;
-    background: url(../img/cardfront.png)center;
-    /*background: #02ccba;*/
+    background: #02ccba;
     font-size: 33px;
 }
 
