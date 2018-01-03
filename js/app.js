@@ -50,9 +50,8 @@ Increases the moves counter and calls the function to refresh the counter on the
 It calls the function open cards which temporarely shows up to 2 cards open (not matching)
 */
 $('.card').click('li', function (e) {
-
     let card = $(e.target);
-    let symbol = card.children();
+    // TO BE REMOVED let symbol = card.children();
     turn++;
     turnCounter();
     openCards(card);
@@ -79,6 +78,8 @@ function openCards(card) {
 
 //Dettaches the class open show to show the cards even once the turn has finished.
 function closeCards(a, b) {
+    //TO BE IMPLEMENTED
+    //Attach a temporary class to make the cards .swing
     a.toggleClass('open show');
     b.toggleClass('open show');
 }
