@@ -9,7 +9,7 @@ let bestScore = 0;
 shuffle(cardsSymbols);
 
 /*
-This function get the shuffelled array and  makes sure none of the cards have either a open show or a match class to close them all.
+This function get the shuffeled array and  makes sure none of the cards have either a open show or a match class to close them all.
 then removes the old image from the card and attaches the new one.
 */
 function attach(array) {
@@ -53,7 +53,6 @@ $('.card').click('li', function (e) {
 
     let card = $(e.target);
     let symbol = card.children();
- //TO BE REMOVED!!   let symbolInCard = symbol["0"].className;
     turn++;
     turnCounter();
     openCards(card);
@@ -63,7 +62,7 @@ $('.card').click('li', function (e) {
 $('.restart').click('i', function () {
     i = 0;
     turn = 0;
-    matchedPairs =0;
+    matchedPairs = 0;
     card1, card2 = undefined;
     turnCounter()
     shuffle(cardsSymbols);
@@ -129,25 +128,16 @@ and calls the record function.
 */
 function won(matchedPairs) {
     if (matchedPairs === 8) {
-        $('#winning').modal('show');  
+        $('#winning').modal('show');
+        $('.modal-body > h1').after(`<h2>With only: ${turn} movements!!</h2>`);
         record();
-    }    
+    }
 }
 
 //Updates and keeps the best record on the games played.
-function record(){
+function record() {
     if (bestScore === 0 || turn < bestScore) {
         bestScore = 'Best Score: ' + turn;
         $('span.record').text(bestScore);
     }
 }
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
