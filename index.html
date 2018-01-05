@@ -39,10 +39,11 @@
 
             <span class="moves"> Moves: 0 </span>
             <span> Your time</span>
-            <span id="minutes"></span>:<span id="seconds"></span>
+            <span id="minutes"></span>:
+            <span id="seconds"></span>
 
             <div class="restart">
-                <i class="fa fa-repeat"></i>
+                <i class="fa fa-repeat fa-2x"></i>
             </div>
 
         </section>
@@ -106,8 +107,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <span class="goldstars"></span>
                     <h1 class="monoton">YOU WON!!</h1>
-                    <h3>Do you want to play again?</h3>
+                    <h3 id="won">Do you want to play again?</h3>
+                    <button class="btn btn-primary btn-md restart" type="button" data-dismiss="modal">
+                        <i class="fa fa-repeat fa-spin" aria-hidden="true"></i>
+                    </button>
                     <button class="btn btn-success btn-md" type="button" data-dismiss="modal">
                         <i class="fa fa-times"></i>Close</button>
                 </div>

@@ -5,6 +5,7 @@ let i = 0;
 let turn = 0;
 let matchedPairs = 0;
 let bestScore = 0;
+let sec = 0;
 
 shuffle(cardsSymbols);
 
@@ -45,13 +46,8 @@ function shuffle(array) {
 }
 
 //Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
-let sec = 0;
-function pad ( val ) { return val > 9 ? val : "0" + val; }
-setInterval( function(){
-    $("#seconds").html(pad(++sec%60));
-    ()
-    $("#minutes").html(pad(parseInt(sec/60,10)));
-}, 1000);
+
+
 
 /*
 event to check which card was clicked. 
@@ -60,10 +56,9 @@ It calls the function open cards which temporarely shows up to 2 cards open (not
 */
 $('.card').click('li', function (e) {
     let card = $(e.target);
-    // TO BE REMOVED let symbol = card.children();
     turn++;
     turnCounter();
-    openCards(card);
+    openCards(card);    
 });
 
 //reset the game and counters.
@@ -72,9 +67,34 @@ $('.restart').click('i', function () {
     turn = 0;
     matchedPairs = 0;
     card1, card2 = undefined;
+    sec = 0;
+    $('ul.stars > li > i').toggleClass('fa fa-star');
     turnCounter()
     shuffle(cardsSymbols);
 });
+
+function pad ( val ) { return val > 9 ? val : "0" + val; }
+
+let timer = setInterval( function(){
+    $("#seconds").html(pad(++sec%60));
+    $("#minutes").html(pad(parseInt(sec/60,10)));
+    stars();
+}, 1000);
+
+//remove stars from the game rating
+function stars(){
+    if (sec === 25) {
+        $('.fa.fa-star').first().removeClass('fa fa-star');        
+    } else if (sec === 32){
+        $('.fa.fa-star').first().removeClass('fa fa-star');
+    } else if(sec === 40){
+        $('.fa.fa-star').first().removeClass('fa fa-star');
+    }
+}
+
+function removeStar(){
+    $('.fa.fa-star').first().removeClass('fa fa-star');
+}
 
 /*
 temporarely attaches the class open show to show the cards even if they donw match.
@@ -94,7 +114,7 @@ function closeCards(a, b) {
         b.toggleClass('open show', false);
         a.toggleClass('swing', false);
         b.toggleClass('swing', false);
-    }, 1300);
+    }, 750);
     
 }
 
@@ -141,8 +161,11 @@ and calls the record function.
 function won(matchedPairs) {
     if (matchedPairs === 8) {
         $('#winning').modal('show');
-        $('.modal-body > h1').after(`<h2>With only: ${turn} movements!!</h2>`);
+        $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec/60,10)}: ${sec%60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
+        $('ul.stars').clone().appendTo('.goldstars');
+        $('.goldstars').children().css({'list-style': 'none', 'display': 'inline-flex'});
         record();
+        clearInterval(timer);
     }
 }
 
