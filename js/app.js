@@ -44,6 +44,15 @@ function shuffle(array) {
     attach(array);
 }
 
+//Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+let sec = 0;
+function pad ( val ) { return val > 9 ? val : "0" + val; }
+setInterval( function(){
+    $("#seconds").html(pad(++sec%60));
+    ()
+    $("#minutes").html(pad(parseInt(sec/60,10)));
+}, 1000);
+
 /*
 event to check which card was clicked. 
 Increases the moves counter and calls the function to refresh the counter on the page.
@@ -78,10 +87,15 @@ function openCards(card) {
 
 //Dettaches the class open show to show the cards even once the turn has finished.
 function closeCards(a, b) {
-    //TO BE IMPLEMENTED
-    //Attach a temporary class to make the cards .swing
-    a.toggleClass('open show');
-    b.toggleClass('open show');
+    a.toggleClass('swing',true);
+    b.toggleClass('swing',true);
+    setTimeout(() => {
+        a.toggleClass('open show', false);
+        b.toggleClass('open show', false);
+        a.toggleClass('swing', false);
+        b.toggleClass('swing', false);
+    }, 1300);
+    
 }
 
 //Store cards values temporarely to check if they are equal and calls the method to do so.
@@ -99,8 +113,7 @@ function addToList(card) {
 /*
 check the cards in the turn for equality if so add match class to keep them open and remove the temporary classes open show.
 increase the counter of matched pairs.
-if the cards are not equal close them after 0.5 sec.
-erase values from temporary variables and check if the game is won.
+closes the cards in case they are not a match and erase values from temporary variables and check if the game is won.
 */
 function compareCards(a, b) {
     if (a.children()["0"].className === b.children()["0"].className) {
@@ -109,9 +122,7 @@ function compareCards(a, b) {
         closeCards(a, b);
         matchedPairs++;
     } else {
-        setTimeout(() => {
-            closeCards(a, b);
-        }, 500);
+        closeCards(a, b);
     }
     card1, card2 = undefined;
     won(matchedPairs);
