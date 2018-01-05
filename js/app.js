@@ -45,7 +45,6 @@ function shuffle(array) {
     attach(array);
 }
 
-//Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
 
 
 
@@ -70,10 +69,15 @@ $('.restart').click('i', function () {
     sec = 0;
     $('ul.stars > li > i').toggleClass('fa fa-star');
     turnCounter()
+    $('.goldstars').children().remove();
+    $('.modal-body > h1').siblings('h2').remove();
     shuffle(cardsSymbols);
 });
 
-function pad ( val ) { return val > 9 ? val : "0" + val; }
+//Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+function pad ( val ) { 
+    return val > 9 ? val : "0" + val; 
+}
 
 let timer = setInterval( function(){
     $("#seconds").html(pad(++sec%60));
@@ -160,13 +164,17 @@ and calls the record function.
 */
 function won(matchedPairs) {
     if (matchedPairs === 8) {
-        $('#winning').modal('show');
-        $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec/60,10)}: ${sec%60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
-        $('ul.stars').clone().appendTo('.goldstars');
-        $('.goldstars').children().css({'list-style': 'none', 'display': 'inline-flex'});
+        winModal();
         record();
         clearInterval(timer);
     }
+}
+
+function winModal(){
+    $('#winning').modal('show');
+    $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec/60,10)}: ${sec%60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
+    $('ul.stars').clone().appendTo('.goldstars');
+    $('.goldstars').children().css({'list-style': 'none', 'display': 'inline-flex'});
 }
 
 //Updates and keeps the best record on the games played.
