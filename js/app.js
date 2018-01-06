@@ -131,6 +131,7 @@ function winModal() {
     $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec / 60, 10)}: ${sec % 60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
     $('ul.stars').clone().appendTo('.goldstars');
     $('.goldstars').children().css({ 'list-style': 'none', 'display': 'inline-flex' });
+    $('.goldstars').children().toggleClass('x2');
 }
 
 //Updates and keeps the best record on the games played.

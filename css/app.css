@@ -156,6 +156,10 @@ body {
     text-align: center;
  }
 
+ .x2{
+     transform: scale(3,3);
+ }
+
  /* bounceIn CSS from http://www.theappguruz.com/tag-tools/web/CSSAnimations/*/
 @-webkit-keyframes bounceIn {
     0%, 20%, 40%, 60%, 80%, 100% {
