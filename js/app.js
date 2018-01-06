@@ -9,6 +9,20 @@ let sec = 0;
 
 shuffle(cardsSymbols);
 
+// Shuffle function from http://stackoverflow.com/a/2450976
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    attach(array);
+}
+
 /*
 This function get the shuffeled array and  makes sure none of the cards have either a open show or a match class to close them all.
 then removes the old image from the card and attaches the new one.
@@ -27,26 +41,7 @@ function attach(array) {
         //add the new and shuffled symbol to the cards.
         $(this).addClass(array[i]);
     });
-    turnCounter();
-
 }
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    attach(array);
-}
-
-
-
 
 /*
 event to check which card was clicked. 
@@ -57,47 +52,13 @@ $('.card').click('li', function (e) {
     let card = $(e.target);
     turn++;
     turnCounter();
-    openCards(card);    
+    openCards(card);
 });
 
-//reset the game and counters.
-$('.restart').click('i', function () {
-    i = 0;
-    turn = 0;
-    matchedPairs = 0;
-    card1, card2 = undefined;
-    sec = 0;
-    $('ul.stars > li > i').toggleClass('fa fa-star');
-    turnCounter()
-    $('.goldstars').children().remove();
-    $('.modal-body > h1').siblings('h2').remove();
-    shuffle(cardsSymbols);
-});
-
-//Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
-function pad ( val ) { 
-    return val > 9 ? val : "0" + val; 
-}
-
-let timer = setInterval( function(){
-    $("#seconds").html(pad(++sec%60));
-    $("#minutes").html(pad(parseInt(sec/60,10)));
-    stars();
-}, 1000);
-
-//remove stars from the game rating
-function stars(){
-    if (sec === 25) {
-        $('.fa.fa-star').first().removeClass('fa fa-star');        
-    } else if (sec === 32){
-        $('.fa.fa-star').first().removeClass('fa fa-star');
-    } else if(sec === 40){
-        $('.fa.fa-star').first().removeClass('fa fa-star');
-    }
-}
-
-function removeStar(){
-    $('.fa.fa-star').first().removeClass('fa fa-star');
+//turn the moves counter up
+function turnCounter() {
+    turnText = 'Moves: ' + turn
+    $('span.moves').text(turnText);
 }
 
 /*
@@ -107,19 +68,6 @@ it calls the function to store those cards values.
 function openCards(card) {
     card.addClass('open show');
     addToList(card);
-}
-
-//Dettaches the class open show to show the cards even once the turn has finished.
-function closeCards(a, b) {
-    a.toggleClass('swing',true);
-    b.toggleClass('swing',true);
-    setTimeout(() => {
-        a.toggleClass('open show', false);
-        b.toggleClass('open show', false);
-        a.toggleClass('swing', false);
-        b.toggleClass('swing', false);
-    }, 750);
-    
 }
 
 //Store cards values temporarely to check if they are equal and calls the method to do so.
@@ -152,9 +100,17 @@ function compareCards(a, b) {
     won(matchedPairs);
 }
 
-function turnCounter() {
-    turnText = 'Moves: ' + turn
-    $('span.moves').text(turnText);
+//Dettaches the class open show to show the cards even once the turn has finished.
+function closeCards(a, b) {
+    a.toggleClass('swing', true);
+    b.toggleClass('swing', true);
+    setTimeout(() => {
+        a.toggleClass('open show', false);
+        b.toggleClass('open show', false);
+        a.toggleClass('swing', false);
+        b.toggleClass('swing', false);
+    }, 750);
+
 }
 
 /*
@@ -170,11 +126,12 @@ function won(matchedPairs) {
     }
 }
 
-function winModal(){
+//Add the time that took to win the game and the stars achieved to the modal
+function winModal() {
     $('#winning').modal('show');
-    $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec/60,10)}: ${sec%60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
+    $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec / 60, 10)}: ${sec % 60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
     $('ul.stars').clone().appendTo('.goldstars');
-    $('.goldstars').children().css({'list-style': 'none', 'display': 'inline-flex'});
+    $('.goldstars').children().css({ 'list-style': 'none', 'display': 'inline-flex' });
 }
 
 //Updates and keeps the best record on the games played.
@@ -184,6 +141,47 @@ function record() {
         $('span.record').text(bestScore);
     }
 }
+
+//Timer function from https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+function pad(val) {
+    return val > 9 ? val : "0" + val;
+}
+
+let timer = setInterval(function () {
+    $("#seconds").html(pad(++sec % 60));
+    $("#minutes").html(pad(parseInt(sec / 60, 10)));
+    stars();
+}, 1000);
+
+//reset the game and counters.
+$('.restart').click('i', function () {
+    i = 0;
+    turn = 0;
+    matchedPairs = 0;
+    card1, card2 = undefined;
+    sec = 0;
+    $('ul.stars > li > i').toggleClass('fa fa-star');
+    turnCounter()
+    $('.goldstars').children().remove();
+    $('.modal-body > h1').siblings('h2').remove();
+    shuffle(cardsSymbols);
+});
+
+//remove stars from the game rating
+function stars() {
+    if (sec === 25) {
+        removeStar();
+    } else if (sec === 32) {
+        removeStar();
+    } else if (sec === 40) {
+        removeStar();
+    }
+}
+
+function removeStar() {
+    $('.fa.fa-star').first().removeClass('fa fa-star');
+}
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
