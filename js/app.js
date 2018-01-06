@@ -6,6 +6,7 @@ let turn = 0;
 let matchedPairs = 0;
 let bestScore = 0;
 let sec = 0;
+let timer;
 
 shuffle(cardsSymbols);
 
@@ -59,6 +60,9 @@ $('.deck').on('click', 'li.card', function (e) {
 function turnCounter() {
     turnText = 'Moves: ' + turn
     $('span.moves').text(turnText);
+    if (turn > 0 && turn < 2) {
+        timer = setInterval(function () { timerCounting() }, 1000);
+    }
 }
 
 /*
@@ -130,7 +134,7 @@ function winModal() {
     $('#winning').modal('show');
     $('.modal-body > h1').after(`<h2>It Took you ${parseInt(sec / 60, 10)}: ${sec % 60} minutes.</h2><h2>With only: ${turn} movements!!</h2>`);
     $('ul.stars').clone().appendTo('.goldstars');
-    $('.goldstars').children().css({ 'list-style': 'none', 'display': 'inline-flex' });
+    $('.goldstars').children().css({ 'list-style': 'none', 'display': 'inline-flex', 'position': 'relative', 'right': '10%' });
     $('.goldstars').children().toggleClass('x2');
 }
 
@@ -147,9 +151,7 @@ function pad(val) {
     return val > 9 ? val : "0" + val;
 }
 
-let timer = setInterval(function () {timerCounting()}, 1000);
-
-function timerCounting(){
+function timerCounting() {
     $("#seconds").html(pad(++sec % 60));
     $("#minutes").html(pad(parseInt(sec / 60, 10)));
     stars();
@@ -163,13 +165,15 @@ $('.restart').click('i', function () {
     card1, card2 = undefined;
     sec = 0;
     clearInterval(timer);
-    timer = setInterval(function () {timerCounting()}, 1000);
     $('ul.stars > li > i').toggleClass('fa fa-star', true);
+    $('.card').toggleClass('avoid-clicks', false);
+    $("#seconds").html('00');
+    $("#minutes").html('0');
     turnCounter()
     $('.goldstars').children().remove();
     $('.modal-body > h1').siblings('h2').remove();
     shuffle(cardsSymbols);
-    
+
 });
 
 //remove stars from the game rating
