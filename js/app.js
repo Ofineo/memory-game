@@ -66,7 +66,7 @@ temporarely attaches the class open show to show the cards even if they donw mat
 it calls the function to store those cards values.
 */
 function openCards(card) {
-    card.addClass('open show');
+    card.addClass('open show avoid-clicks');
     addToList(card);
 }
 
@@ -105,12 +105,11 @@ function closeCards(a, b) {
     a.toggleClass('swing', true);
     b.toggleClass('swing', true);
     setTimeout(() => {
-        a.toggleClass('open show', false);
-        b.toggleClass('open show', false);
+        a.toggleClass('open show avoid-clicks', false);
+        b.toggleClass('open show avoid-clicks', false);
         a.toggleClass('swing', false);
         b.toggleClass('swing', false);
     }, 750);
-
 }
 
 /*

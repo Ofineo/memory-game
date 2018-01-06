@@ -110,6 +110,10 @@ body {
     animation-fill-mode: both;
 }
 
+.avoid-clicks {
+    pointer-events: none;
+  }
+
 /*
  * Styles for the Score Panel
  */
