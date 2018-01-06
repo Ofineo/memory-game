@@ -48,7 +48,7 @@ event to check which card was clicked.
 Increases the moves counter and calls the function to refresh the counter on the page.
 It calls the function open cards which temporarely shows up to 2 cards open (not matching)
 */
-$('.card').click('li', function (e) {
+$('.deck').on('click', 'li.card', function (e) {
     let card = $(e.target);
     turn++;
     turnCounter();
@@ -147,11 +147,13 @@ function pad(val) {
     return val > 9 ? val : "0" + val;
 }
 
-let timer = setInterval(function () {
+let timer = setInterval(function () {timerCounting()}, 1000);
+
+function timerCounting(){
     $("#seconds").html(pad(++sec % 60));
     $("#minutes").html(pad(parseInt(sec / 60, 10)));
     stars();
-}, 1000);
+}
 
 //reset the game and counters.
 $('.restart').click('i', function () {
@@ -160,11 +162,14 @@ $('.restart').click('i', function () {
     matchedPairs = 0;
     card1, card2 = undefined;
     sec = 0;
-    $('ul.stars > li > i').toggleClass('fa fa-star');
+    clearInterval(timer);
+    timer = setInterval(function () {timerCounting()}, 1000);
+    $('ul.stars > li > i').toggleClass('fa fa-star', true);
     turnCounter()
     $('.goldstars').children().remove();
     $('.modal-body > h1').siblings('h2').remove();
     shuffle(cardsSymbols);
+    
 });
 
 //remove stars from the game rating
@@ -178,6 +183,7 @@ function stars() {
     }
 }
 
+//remove stars from the game rating
 function removeStar() {
     $('.fa.fa-star').first().removeClass('fa fa-star');
 }
