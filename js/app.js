@@ -56,7 +56,7 @@ $('.deck').on('click', 'li.card', function (e) {
     openCards(card);
 });
 
-//turn the moves counter up
+//turn the moves counter up and starts the timer
 function turnCounter() {
     turnText = 'Moves: ' + turn
     $('span.moves').text(turnText);
