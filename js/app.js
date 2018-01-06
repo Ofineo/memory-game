@@ -178,8 +178,6 @@ function stars() {
         removeStar();
     } else if (sec === 32) {
         removeStar();
-    } else if (sec === 40) {
-        removeStar();
     }
 }
 
